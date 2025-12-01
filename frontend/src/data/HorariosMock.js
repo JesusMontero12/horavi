@@ -25,3 +25,4 @@ export const horarios = [
     genero: "hombre",
     tags: [],
   },
+];
