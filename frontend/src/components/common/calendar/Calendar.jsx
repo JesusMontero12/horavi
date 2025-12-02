@@ -2,7 +2,7 @@ import { Card } from "react-bootstrap";
 import { CalendarSearch } from "lucide-react";
 import DatePicker from "react-datepicker";
 
-const Calendar = (items) => {
+const Calendar = ({ items }) => {
   const { date, setDate } = items;
   return (
     <>

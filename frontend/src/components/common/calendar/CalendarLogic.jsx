@@ -1,11 +1,13 @@
-import { useState } from "react";
 import Calendar from "./Calendar.jsx";
+import { useBooking } from "../../../context/BookingContext.jsx";
 
 const CalendarLogic = () => {
-  const [date, setDate] = useState(new Date());
+  const { date, setDate } = useBooking();
+
+  let data = { date, setDate };
   return (
     <>
-      <Calendar items={{ date, setDate }} />
+      <Calendar items={data} />
     </>
   );
 };

@@ -2,7 +2,6 @@ import { Button, Card, Form } from "react-bootstrap";
 
 export const CustomerInformation = ({ items }) => {
   const {
-    handleConfirm,
     nombre,
     setNombre,
     celular,
@@ -11,6 +10,9 @@ export const CustomerInformation = ({ items }) => {
     setEmail,
     date,
     selectedTime,
+    selectedPro,
+    selectedService,
+    handleConfirm,
   } = items;
   return (
     <>
@@ -65,6 +67,16 @@ export const CustomerInformation = ({ items }) => {
             <p className="mb-0">
               <strong>Hora: </strong>
               {selectedTime || "No seleccionada"}
+            </p>
+            <p className="mb-0">
+              <strong>Profesional: </strong>
+              {selectedPro?.nombre || "No seleccionado"}
+            </p>
+            <p className="mb-0">
+              <strong>Servicio: </strong>
+              {selectedService?.nombre
+                ? `${selectedService.nombre} - $${selectedService.precio}`
+                : "No seleccionado"}
             </p>
           </div>
 

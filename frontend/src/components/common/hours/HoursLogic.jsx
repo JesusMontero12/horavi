@@ -1,9 +1,8 @@
-import { useState } from "react";
 import Hours from "./Hours.jsx";
+import { useBooking } from "../../../context/BookingContext.jsx";
 
 const HoursLogic = () => {
-  const [selectedTime, setSelectedTime] = useState(null);
-
+  const { selectedTime, setSelectedTime } = useBooking();
   const availableHours = [
     "09:00",
     "09:30",
@@ -21,9 +20,11 @@ const HoursLogic = () => {
     "16:30",
     "17:00",
   ];
+
+  let data = { selectedTime, setSelectedTime, availableHours };
   return (
     <>
-      <Hours items={{ selectedTime, setSelectedTime, availableHours }} />
+      <Hours items={data} />
     </>
   );
 };

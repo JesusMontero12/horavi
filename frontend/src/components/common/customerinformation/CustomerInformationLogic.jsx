@@ -1,17 +1,61 @@
-import { useState } from "react";
+import Swal from "sweetalert2";
 import { CustomerInformation } from "./CustomerInformation.jsx";
+import { useBooking } from "../../../context/BookingContext.jsx";
 
 const CustomerInformationLogic = () => {
-  const [date, setDate] = useState(new Date());
-  const [selectedTime, setSelectedTime] = useState(null);
-  const [nombre, setNombre] = useState("");
-  const [celular, setCelular] = useState("");
-  const [email, setEmail] = useState("");
+  const {
+    nombre,
+    setNombre,
+    celular,
+    setCelular,
+    email,
+    setEmail,
+    date,
+    selectedTime,
+    selectedPro,
+    selectedService,
+  } = useBooking();
 
-  const handleConfirm = () => {
-    if (!nombre.trim()) return alert("Por favor ingresa nombre y apellido.");
-    if (!celular.trim()) return alert("Por favor ingresa número de celular.");
-    if (!selectedTime) return alert("Por favor selecciona una hora.");
+  function handleConfirm() {
+    if (!nombre.trim()) {
+      return Swal.fire({
+        icon: "error",
+        title: "Nombre requerido",
+        text: "Por favor ingresa nombre y apellido.",
+      });
+    }
+
+    if (!celular.trim()) {
+      return Swal.fire({
+        icon: "error",
+        title: "Celular requerido",
+        text: "Por favor ingresa número de celular.",
+      });
+    }
+
+    if (!selectedTime) {
+      return Swal.fire({
+        icon: "error",
+        title: "Hora no seleccionada",
+        text: "Por favor selecciona una hora.",
+      });
+    }
+
+    if (!selectedPro) {
+      return Swal.fire({
+        icon: "error",
+        title: "Profesional no seleccionado",
+        text: "Por favor selecciona un profesional.",
+      });
+    }
+
+    if (!selectedService) {
+      return Swal.fire({
+        icon: "error",
+        title: "Servicio no seleccionado",
+        text: "Por favor selecciona un servicio.",
+      });
+    }
 
     const payload = {
       nombre,
@@ -19,28 +63,42 @@ const CustomerInformationLogic = () => {
       email: email || null,
       fecha: date?.toISOString?.() ?? String(date),
       hora: selectedTime,
+      profesional: selectedPro,
+      servicio: selectedService,
     };
 
-    console.log("Confirmando cita:", payload);
-    alert(
-      `Cita confirmada: ${nombre} — ${date?.toLocaleDateString()} ${selectedTime}`
-    );
+    // Alert de confirmación
+    Swal.fire({
+      icon: "success",
+      title: "Cita confirmada",
+      html: `
+      <strong>${nombre} tu cita es el:</strong><br>
+      ${date?.toLocaleDateString()} a las <strong>${selectedTime}</strong><br><br>
+      Con <strong>${selectedPro.nombre}</strong><br>
+      Servicio: <strong>${selectedService.nombre}</strong><br>
+      Precio: <strong>$${selectedService.precio}</strong>
+    `,
+      confirmButtonText: "Perfecto",
+    });
+  }
+
+  let data = {
+    nombre,
+    setNombre,
+    celular,
+    setCelular,
+    email,
+    setEmail,
+    date,
+    selectedTime,
+    selectedPro,
+    selectedService,
+    handleConfirm,
   };
+
   return (
     <>
-      <CustomerInformation
-        items={{
-          handleConfirm,
-          nombre,
-          setNombre,
-          celular,
-          setCelular,
-          email,
-          setEmail,
-          date,
-          selectedTime,
-        }}
-      />
+      <CustomerInformation items={data} />
     </>
   );
 };
